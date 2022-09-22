@@ -268,23 +268,26 @@
       connectivity between RAN to CN slices.</t>
 
       <t><figure>
-          <artwork><![CDATA[   <--------- 5G E2E Network Slice  -------->
-   <--- RS ------->                <-- CS -->
-                    <--- INS_1 -->           
-   ..................
-   : RAN            :
-   :                : .............           
-   :                : :           : |------|  
-   :                : :    TN     : | CN   |  
-   :                : :           : |------|  
-   :                : :...........:           
-   :................:
+          <artwork><![CDATA[
+   <-------------- 3GPP E2E Network Slice  ------------->
+     <---- RS ---->           <-------- CS ---------->
+                    <- INS1 ->         <- INS2 ->
+   .................          .........................
+   : RAN           :          : CN                    :
+   :               : ........ :        .......        :
+   : |----| |----| : :      : : |----| :     : |----| :
+   : | NF1| | NF2| : :  TN1 : : | NF | : TN2 : | NF | :
+   : |----| |----| : :      : : |----| :     : |----| :
+   :               : :......: :        :.....:        :
+   :...............:          :.......................:  
 
    Legend
      INS: IETF Network Slice
      RS: RAN Slice
      CS: Core Slice
      TN: IETF network
+     CN: Core Network
+     RAN:Access Neetwork (Radio)
 
       Figure 2-1:  IETF network slices in distributed RAN deployment]]></artwork>
         </figure><list style="symbols">
