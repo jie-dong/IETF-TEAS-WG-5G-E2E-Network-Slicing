@@ -250,18 +250,25 @@
        |          +-----------------------------+            |  
        +-----------------------------------------------------+
         Figure-1 Scope of 5G End to End Network Slice
-]]></artwork>
+            ]]></artwork>
         </figure></t>
 
-      <t>Depend on the RAN technology deployment, the 5G IETF network slices
-      are sets of connections between network functions and mobile
-      applications:</t>
+    <t> Depends on Radio Access Network (RAN) deployment, one or multiple IETF network slice might be needed in 3GPP network. In 
+      , 
+       the details of various IETF network slices for following RAN deployment will be discussed:
+      <list style="symbols">
+        <t> Distributed RAN</t>
+        <t> Centralized RAN</t>
+        <t> Cloud RAN (C-RAN)</t>
+      </list>
+    </t>
 
       <t><list style="symbols">
           <t>IETF Network Slices in Distributed RAN deployment</t>
         </list>Distributed RAN is the most common deployment of 3GPP RAN
       networks as shown in Figure 2-1. The radio acess network (RAN) is connected to Core
-      network (CN) using the IETF transport network (TN1).</t>
+      network (CN) using the IETF transport network (TN1).
+      </t>
 
       <t>In this case, a single 3GPP E2E network slice contains not only RAN and
       Core slices but IETF network slices INS1. INS1 provides the
@@ -479,6 +486,304 @@ Figure 4 5G End-to-End Network Slice and its components
           doesn't necessarily require new encapsulation.</t>
         </list>The relationship between these identifiers are specifies in the
       following sections.</t>
+    </section>
+
+    <section anchor="section_overview_ins_realization"
+      title="Overview of IETF Network Slice Realization Methods for 3GPP Network Slices">
+      <t> 
+        Referring to Figure 2-1, 2-2 and 2-3, a 3GPP network slice might have one or more IETF network slices.
+        <xref target="fig_typical_ins_in_3gpp"/> is a representation of any of these networks where the IETF network slice provides the connectivity between NF1 and NF2 for specific SLO/SLE. For example, <xref target="fig_typical_ins_in_3gpp"/> could represent Figure 2-3 where the IETF network slice needed between network functions are CU and UPF or it could represent the Figure 2-3 where the IETF network slice is between network functions DU and CU.
+      </t>
+      <figure align="center" anchor="fig_typical_ins_in_3gpp">
+        <name>Typical IETF Network Slice in 3GPP Network</name>
+        <artwork align="left"><![CDATA[
+              AC         .-------.           AC 
+              |        ,'         `.         |             
+              |      ,'             `.       |             
+   --------   V   -------          -------   V   --------
+   |      |       |     |          |     |       |      |
+   | NF1  |-------| PE1 |          | PE2 |-------| NF2  |
+   |      |-------|     |          |     |       |      |
+   --------       ------- Provider -------       -------- 
+                      `.  Network  ,'
+                        `.       ,'
+                          -------
+          ]]>
+        </artwork>
+      </figure>    
+
+      <t>
+        To provide an overview of various IETF network slice realization solutions, we focus on Figure 2-3 where the IETF network slide is INS1 and NF1 and NF2 are CU and UPF, respectively. <xref target="fig_typical_ins_in_3gpp_2"/> shows Although the realization methods described below is related to INS1, they are applicable to other IETF network slices of Figure 2-1, 2-2 and 2-3. The result is shown in Figure 5. Please note that the IETF network slice INS1 is between SDP1 and SPD2 which are the N3 interfaces on CU and UPF, respectively. As shown in <xref target="fig_typical_ins_in_3gpp_2"/>(A) and <xref target="fig_typical_ins_in_3gpp_2"/>(B), the SDPs could be the loopback interface or IP interface. For simplicity only case (A) is considered for the rest of the section although the various realization methods are applicable to both cases.
+       </t>                          
+
+      <figure align="center" anchor="fig_typical_ins_in_3gpp_2">
+        <name>Representation of a Typical IETF Network Slice in 3GPP Network</name>
+        <artwork align="left"><![CDATA[
+      SDP1                  INS1                  SDP2
+    (N3 I/F)                 |                  (N3 I/F)
+       |                 .---|---.                  | 
+       |               ,'    |    `.                |      
+       v             ,'      V      `.              V       
+   --------       -------          -------       --------    
+   |   o=============================================o  | 
+   |      |       | PE1 |          | PE2 |       |      |
+   | CU   |       |     |          |     |       | UPF  |
+   --------       ------- Provider -------       --------  
+                      `.  Network  ,'
+                        `.       ,'
+                          -------   
+
+                            (A)
+
+         SDP1               INS1                SDP2
+       (N3 I/F)              |                (N3 I/F)
+          |              .---|---.               | 
+          |            ,'    |    `.             |      
+          v          ,'      V      `.           V       
+   --------       -------          -------       --------    
+   |      *======================================*      | 
+   |      |       | PE1 |          | PE2 |       |      |
+   | CU   |       |     |          |     |       | UPF  |
+   --------       ------- Provider -------       --------  
+                      `.  Network  ,'
+                        `.       ,'
+                          -------   
+
+                            (B)
+ Legend:
+   *  SDP (N3 interface as CU IP interface)
+   O  SDP (N3 as CU loopback interface)
+          ]]>
+        </artwork>
+      </figure>  
+
+      <t>
+        To realize the INS1 shown in <xref target="fig_typical_ins_in_3gpp_2"/>(A), the IETF network slice controller (NSC) can use the following techniques:
+        <list style="symbols">
+          <t> VLAN handoff</t>
+          <t> MPLS label handoff</t>          
+          <t> SRv6 label handoff</t>
+          <t> Policy Based Routing (PBR)</t>          
+          <t> GTP source port based</t>
+        </list>
+      </t>
+
+      <section anchor="section_vlan_handoff" title="VLAN Hand-off">
+        <t>
+          As shown in <xref target="fig_vlan_handoff"/>, the IETF Network slice INS1 is realized between network functions CU and UPF using the VLAN handoff. In this case the VLAN is logical representation of the 3GPP network slice to provider network. Refer to section 3.1 of [draft-srld-teas-5g-slicing-0] for details of this solution.
+        </t>
+
+        <figure align="center" anchor="fig_vlan_handoff">
+        <name>VLAN hand-off based for IETF Network Slice Realization</name>
+        <artwork align="left"><![CDATA[
+      <-------------------- INS1 ------------------->
+
+        VLAN Handoff  IP/MPLS Services
+              |              |
+              |              |                  
+     N3 I/F   |          .---|---.                N3 I/F 
+       |      |        ,'    |    `.                |      
+       V      V      ,'      V      `.              V       
+   --------       -------          -------       --------    
+   |   O..........+======================+...........O  | 
+   |      |       | PE1 |          | PE2 |       |      |
+   | CU   |       |     |          |     |       | UPF  |
+   --------       ------- Provider -------       --------  
+                      `.  Network  ,'
+                        `.       ,'
+                          -------   
+
+                            (A)
+ Legend:
+   O  SDP (N3 interface)
+   +  Access points to provider network 
+   ... VLAN hand-off
+   === IP/MPLS transport service in provider network
+          ]]>
+        </artwork>
+       </figure> 
+      </section>
+
+      <section anchor="section_srv6_label_handoff" title="SRv6 Label Hand-off">
+        <t>
+          <xref target="fig_srv6_label_handoff"/> depicts the realization of the IETF network slice INS1 using the SRv6 label handoff method. In this case, an SRv6 label which represents the 3GPP network slice is added by CU or UPF to IP traffic. In this case, network function CU and UPF are the endpoint of the realization of IETF network slice INS1 and PE nodes do not have any context of the IETF network.
+        </t>
+        <t> 
+          In this solution the identification of the 3GPP network slice is embedded into IPv6 label where the 32-bit 3GPP network slice identification is mapped into 128 bit of IPV6 label. Refer to section 3.2 of [draft-srld-teas-5g-slicing-0] for details of this solution.
+        </t>
+
+        <figure align="center" anchor="fig_srv6_label_handoff">
+        <name>SRV6 hand-off based for IETF Network Slice Realization</name>
+        <artwork align="left"><![CDATA[
+      <-------------------- INS1 ------------------->
+
+        SRv6 tunnel  
+              |              
+              |                                
+     N3 I/F   |          .-------.                N3 I/F 
+       |      |        ,'         `.                |      
+       V      V      ,'             `.              V       
+   --------       -------          -------       --------    
+   |   *=============================================*  | 
+   |      |       | PE1 |          | PE2 |       |      |
+   | CU   |       |     |          |     |       | UPF  |
+   --------       ------- Provider -------       --------  
+                      `.  Network  ,'
+                        `.       ,'
+                          -------   
+
+                            (A)
+ Legend:
+   * Access points to SRv6 Tunnel. Also the SDP (N3 interface) 
+   === Realization of the INS1 using SRv6 tunnel 
+          ]]>
+        </artwork>
+       </figure> 
+      </section>
+
+      <section anchor="section_mpls_label_handoff" title="MPLS Lable Hand-off">
+        <t>
+          Similar to section 2.4.2, the MPLS label based method uses an MPLS label as identification of the 3GPP network slice. <xref target="fig_mpls_label_handoff"/> shows this solution where the IETF network slice INS1 is relaized by CU and UPF using the MPLS label. In this case, network function CU and UPF are the endpoint of the realization of IETF network slice INS1 and PE nodes do not have any context of the IETF network. Refer to section 3.3 of [draft-srld-teas-5g-slicing-0] for details of this solution.
+        </t>
+
+        <figure align="center" anchor="fig_mpls_label_handoff">
+        <name>MPLS hand-off based for IETF Network Slice Realization</name>
+        <artwork align="left"><![CDATA[
+      <-------------------- INS1 ------------------->
+
+        MPLS label tunnel  
+              |              
+              |                                
+     N3 I/F   |          .-------.                N3 I/F 
+       |      |        ,'         `.                |      
+       V      V      ,'             `.              V       
+   --------       -------          -------       --------    
+   |   *=============================================*  | 
+   |      |       | PE1 |          | PE2 |       |      |
+   | CU   |       |     |          |     |       | UPF  |
+   --------       ------- Provider -------       --------  
+                      `.  Network  ,'
+                        `.       ,'
+                          -------   
+
+                            (A)
+ Legend:
+   * Access points to MPLS Tunnel. Also the SDP (N3 interface) 
+   === Realization of the INS1 using MPLS lable 
+          ]]>
+        </artwork>
+       </figure> 
+      </section>
+
+      <section anchor="section_pbr" title="Policy based routing (PBR)">
+        <t>
+          As shown in <xref target="fig_pbr"/>, in some deployments of the 3GPP network slices, it would be possible for provider edge (PE) nodes to infer the 3GPP network slice identification from the information in the IP packet. In these cases, the IETF network slice INS1 is identified by provider edger (PE) routers by a policy which might use any combination of the following attributes of the IP packet. 
+          <list style="symbols">
+            <t>Source N3 IP address</t>
+            <t>Destination N3 IP address</t>          
+            <t>Ingress interface</t>
+            <t>DSCP</t>          
+            <t>Other information in IP packet</t>
+          </list>
+        </t>
+
+        <figure align="center" anchor="fig_pbr">
+        <name>Policy based routing (PBR) label hand-off based for IETF Network Slice Realization</name>
+        <artwork align="left"><![CDATA[
+      <-------------------- INS1 ------------------->
+
+                 PBR  IP/MPLS Services  PBR
+                  |          |           |
+                  |          |           |      
+     N3 I/F       |      .---|---.       |        N3 I/F 
+       |          |    ,'    |    `.     |          |      
+       V          V  ,'      V      `.   V          V       
+   --------       -------          -------       --------    
+   |   O..........+======================+..........O   | 
+   |      |       | PE1 |          | PE2 |       |      |
+   | CU   |       |     |          |     |       | UPF  |
+   --------       ------- Provider -------       --------  
+                      `.  Network  ,'
+                        `.       ,'
+                          -------   
+ Legend:
+   O  SDP ((N3 interface)
+   +  Access points of IP/MPLS Services when PBR is applied
+   === IP/MPLS service  
+          ]]>
+        </artwork>
+       </figure> 
+      </section>
+
+      <section anchor="section_gtp" title="GTP Source Port-Based">
+        <t>
+          In some deployments of the 3GPP network slices, the IETF network slice INS1 might be realized by multiple GTP tunnels. As shown in <xref target="fig_gtp"/>, this solution uses the source UDP port of the GTP tunnel to carry the identification of 3GPP network slice. A mapping table between the 3GPP network slice and the source UDP port is needed in this solution and needs to be maintained by network functions CU, UPF and PE nodes. Refer to section 2.5 of [draft-ietf-dmm-tn-aware-mobility-04] for details of this solution.
+        </t>
+
+        <figure align="center" anchor="fig_gtp">
+        <name>GTP source port-based for IETF Network Slice Realization</name>
+        <artwork align="left"><![CDATA[
+      <-------------------- INS1 ------------------->
+
+      GTP tunnels  
+              |         
+              |                
+     N3 I/F   |          .-------.                N3 I/F 
+       |      |        ,'         `.                |      
+       V      V      ,'             `.              V       
+   --------       -------          -------       --------    
+   |   *=============================================*  | 
+   |   *=============================================*  | 
+   |      |       | PE1 |          | PE2 |       |      |
+   | CU   |       |     |          |     |       | UPF  |
+   --------       ------- Provider -------       --------  
+                      `.  Network  ,'
+                        `.       ,'
+                          -------   
+ Legend:
+   *  SDP (N3 interfaces)
+   === Realization of the INS1 using data plane GTP tunnels  
+          ]]>
+        </artwork>
+       </figure> 
+      </section>
+
+      <section anchor="section_vnf_pnf" title="Consideration of the Virtual Network Functions (VNF)">
+        <t>
+          In some 3GPP network slice deployments, it might be beneficial to deploy RAN and Core network functions such as DU, CU, UPF etc as virtual network functions (VNF) inside a data center (DC). As an example, consider <xref target="fig_vnf_pnf"/> where the CU and UPF have been deployed as VNF. The definition of the IETF network slice INS1 is exactly similar to previous use-cases, i.e., INS1 is an IETF network slice to provides the connectivity between service demarcation points SDP1 and SDP2 to satisfy certain SLO/SLE. However, the realization of INS1 might be different from previous use-cases. <xref target="fig_vnf_pnf"/> shows one possible solution for realization of INS1 where a portion of realization is inside provider's network and other portion is inside data centers. As an example, L3VPN service technology could be used inside the provider network between provider edge routers PE1 and PE2 and VXLAN could be used inside data centers towards PE1 and PE2. Note that the choice of technology during the realization is responsibility of IETF network slice controller (NCS) and is out of scope of this draft     
+        </t>
+
+        <figure align="center" anchor="fig_vnf_pnf">
+        <name>VNF Consideration for IETF Network Slice Realization</name>
+        <artwork align="left"><![CDATA[
+      <-------------------- INS1 ------------------->
+
+        Realization of INS1   Realization of INS1
+        in data center        in provider network  
+                |              |            
+       SDP1     |              |                     SDP2  
+        |       |          .---|---.                  |
+        V       V        ,'    |    `.                V     
+ |------------|        ,'      V      `.        |------------|      
+ |  --------  |     -------          -------    |  --------  |  
+ |  |   O...........+======================+..........O   |  |
+ |  |      |  |     | PE1 |          | PE2 |    |  |      |  |
+ |  | CU   |  |     |     |          |     |    |  | UPF  |  |
+ |  --------  |     ------- Provider -------    |  -------   |
+ |            |         `.  Network  ,'         |            | 
+ |------------|           `.       ,'           |------------|
+      DC1                   -------                   DC2
+
+ Legend:
+   DC  Data Center
+   O   SDP (N3 interfaces)
+   === Realization of INS1 in Provider Networks
+   ... Realization of INS1 in data centers
+          ]]>
+        </artwork>
+       </figure>         
+      </section>
+
     </section>
 
     <section title="3GPP Network Slice Mapping Parameters">
