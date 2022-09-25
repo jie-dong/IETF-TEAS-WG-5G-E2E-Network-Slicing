@@ -215,6 +215,13 @@
       <t>NSSMF: Network Slice Subnet Management Function</t>
     </section>
 
+
+<!--
+  ///////////////////////////// start
+-->
+
+
+
     <section title="5G End-to-End Network Slice">
       <t>
         The scope of 5G End-to-End Network Slice discussed in this document is shown in <xref target="fig_scope_3gpp_ns"/>. Transport network provides connectivity between and inside RAN and CN. To support fully automated enablement an assurance of 5G E2E network slices, multiple controllers are needed to manage 5G E2E network slices in RAN, Core and Transport domains. In addition, an E2E network slice orchestrator is needed to provide coordination and control of network slices from an E2E perspective.
@@ -468,7 +475,301 @@ Legend
         </t>
 
       </section>
+
+
+
+
+
     </section>
+
+
+
+
+<!--
+  ///////////////////////////// end
+-->
+
+
+
+
+    <section title="5G End-to-End Network Slice">
+      <t>The scope of 5G End-to-End Network Slice discussed in this document
+      is shown in figure 1. Transport network provides connectivity between
+      and inside RAN and CN. To support fully automated enablement and
+      assurance of 5G E2E network slices, multiple controllers are needed to
+      manage 5G E2E network slices in RAN, Core and Transport domains. In
+      addition, an E2E network slice orchestrator is needed to provide
+      coordination and control of network slices from an E2E perspective.</t>
+
+      <t><figure>
+          <artwork><![CDATA[  
+       +-----------------------------------------------------+
+       |          +-----------------------------+            |            
+ |-----+----------+----------------+            |            | 
+ |   ******   +---+---+   ******   | +----+     |            |  
+ |  *      *  |       |  *      *  | |    |     |            | 
+ | *  RAN   ---  TN   ---  RAN   --|--    |     |            |  
+ |  * NFs  *  |       |  * NFs  *  | |    |     |            |  
+ |   ******   +-------+   ******   | |    |     |            |
+ |---------------------------------+ |    |   +-+--+  +------+------+
+                 RAN                 |    |   |IETF|  |   5G E2E    |
+                                     |    +---+ NSC+--+Network Slice|
+                                     |TN  |   |    |  | Orchestrator|
+                                     |    |   +-+--+  +------+------+
+ +---------------------------------+ |    |     |            |           
+ |   ******   +-------+   ******   | |    |     |            |        
+ |  *      *  |       |  *      *  | |    |     |            |        
+ | *  CN    ---  TN   ---  CN   ---|--    |     |            |           
+ |  * NFs  *  |       |  * NFs  *  | |    |     |            |           
+ |   ******   +---+---+   ******   | +----+     |            |           
+ +-----+----------+----------------+            |            |          
+       |        CN|                             |            |  
+       |          +-----------------------------+            |  
+       +-----------------------------------------------------+
+        Figure-1 Scope of 5G End to End Network Slice
+            ]]></artwork>
+        </figure></t>
+
+      <t> 
+        Depends on Radio Access Network (RAN) deployment, one or multiple IETF network slice might be needed in 3GPP network. In the details of various IETF network slices for following RAN deployment will be discussed:
+        <list style="symbols">
+          <t> Distributed RAN</t>
+          <t> Centralized RAN</t>
+          <t> Cloud RAN (C-RAN)</t>
+        </list>
+      </t>
+
+     
+
+      <t><list style="symbols">
+          <t>IETF Network Slices in Distributed RAN deployment</t>
+        </list>Distributed RAN is the most common deployment of 3GPP RAN
+      networks as shown in Figure 2-1. The radio acess network (RAN) is connected to Core
+      network (CN) using the IETF transport network (TN1).
+      </t>
+
+      <t>In this case, a single 3GPP E2E network slice contains not only RAN and
+      Core slices but IETF network slices INS1. INS1 provides the
+      connectivity between RAN and CN slices.</t>
+
+      <t><figure>
+          <artwork><![CDATA[
+   <-------------- 3GPP E2E Network Slice  ------------->
+     <---- RS ---->           <-------- CS ---------->
+                    <- INS1 ->         <- INS2 ->
+   .................          .........................
+   : RAN           :          : CN                    :
+   :               : ........ :        .......        :
+   : |----| |----| : :      : : |----| :     : |----| :
+   : | NF1| | NF2| : :  TN1 : : | NF | : TN2 : | NF | :
+   : |----| |----| : :      : : |----| :     : |----| :
+   :               : :......: :        :.....:        :
+   :...............:          :.......................:  
+
+   Legend
+     INS: IETF Network Slice
+     RS: RAN Slice
+     CS: Core Slice
+     TN: IETF network
+     CN: Core Network
+     RAN:Access Neetwork (Radio)
+
+      Figure 2-1:  IETF network slices in distributed RAN deployment]]></artwork>
+        </figure><list style="symbols">
+          <t>IETF Network Slices in Centralized RAN deployment</t>
+        </list>In general the RAN network consists of network functions NF1 and MF2.
+      NF1 processes the radio signal and is connected to the transport network and 
+      NF2 transmits and receives the carrier signal that is transmitted over the air to the end user
+      equipment (UE). In Centralized RAN as depicted in Figure 2-2, network functions NF1 and NF2
+      are separated by a network called fronthaul network (FH).</t>
+
+      <t>In this deployment a 3GPP E2E network slice contains of RAN and  
+      Core slices and IETF network slices INS1, INS2 and INS3.
+      INS1 and INS2 are identical to Figure 2-1 and INS3 is a new IETF network 
+      slice across access network between NF1 and NF2.</t>
+
+      <t><figure>
+          <artwork><![CDATA[ 
+   <-------------------- 3GPP E2E Network Slice  ----------------->
+     <-------- RS --------->           <---------- CS --------->
+          <- INS3 ->        <- INS1 ->         <- INS2 ->
+   .........................          ...........................
+   : RAN                   :          : CN                      :
+   :        .......        : ........ :         .......         :
+   : |----| :     : |----| : :      : : |-----| :     : |-----| :
+   : | NF1| : TN3 : | NF2| : :  TN1 : : | NF  | : TN2 : | NF  | :
+   : |----| : (FH): |----| : :      : : |-----| :     : |-----| :
+   :        :.....:        : :......: :         :.....:         :
+   :.......................:          :.........................: 
+
+Legend
+  INS: IETF Network Slice
+  RS: RAN Slice
+  CS: Core Slice
+  FN: Fronthaul IETF network
+  TN: IETF network
+  CN: Core Network
+  RAN:Access Neetwork (Radio)            
+
+     Figure 2-2:  IETF network slices in Centralized RAN deployment]]></artwork>
+        </figure></t>
+
+      <t><list style="symbols">
+          <t>5G IETF Network Slices in Cloud RAN (C-RAN)</t>
+        </list>In Cloud-RAN deployment, the network function NF2 is further
+      disaggregated into real-time and non-real-time components. As shown in 
+      Figure 2-3, these disaggregated components are called CU (Central Unit) and DU
+      (Distributed Unit) where they are connected by a new network called Midhaul network (MH).</t>
+
+      <t>In this deployment a single 3GPP E2E network slice contains not only RAN
+      and 5G Core slices but IETF network slices INS1, INS2, INS3 and INS4.
+      IETF network slices INs1, INS2 and INS3 are identical to their counterparts in centralized RAN deployment case
+      (see Figure 2-2). In this deployment a new IETF network slice INS4 connects the DUs to
+      CUs through F1 interface.</t>
+
+      <t><figure>
+          <artwork><![CDATA[
+   <---------------------- 3GPP E2E Network Slice  ------------------>
+     <-------------- RS -------------->          <------- CS ------>
+          <- INS3 ->      <- INS4 ->   <- INS1 ->     <- INS2 ->
+   .....................................        .....................
+   : RAN                               :        :CN                 :
+   :       .......       ......        : ...... :       .....       :
+   : |---| :     : |---| :     : |---| : :    : : |---| :   : |---| :
+   : |NF1| : TN3 : | DU| : TN4 : | CU| : :TN1 : : | NF| :TN2: | NF| :
+   : |---| : (FH): |---| : (MH): |---| : :(BH): : |---| :   : |---| :
+   :       :.....:       :.....:       : :....: :       :...:       :
+   :...................................:        :...................:  
+
+Legend
+  INS: IETF Network Slice
+  RS: RAN Slice
+  CS: Core Slice
+  FN: Fronthaul IETF network
+  MN: Midhaul IETF bnetwork
+  BH: Backhual IETF network
+  TN: IETF network
+  DU: Distributed Unit
+  CU: Central Unit
+  CN: Core Network
+  RAN:Access Neetwork (Radio)
+
+         Figure 2-3: IETF network slices in Cloud RAN (C-RAN) deployment]]></artwork>
+        </figure></t>
+
+      <t>For the sake of description, the descriptions below all take the TN
+      slice between RAN and CN as an example, and the other cases are
+      similar.</t>
+
+      <t>The following figure shows the correspondence between network
+      entities in E2E 5G slices and IETF slices respectively.</t>
+
+      <t><figure>
+          <artwork><![CDATA[     
+     +---------------------+                                                    
+     |         CSMF        |                                                    
+     +----------|----------+                                                    
+                |                    +------------------------+                 
+     +---------------------+         |  5G E2E Network Slice  |                 
+     |         NSMF        |         |      Orchestrator      |                 
+     +---------------------+         +------------------------+                 
+           /    |    \                            |                          
+          /     |     \                  NSC NBI  |                          
+         /      |      \                          |                          
++---------++---------++---------+    +------------------------+           
+|    AN   ||    TN   ||   CN    |    |   IETF Network Slice   |                 
+|   NSSMF ||   NSSMF ||  NSSMF  |    |     Controller (NSC)   |                 
+|         ||         ||         |    +------------------------+                 
++---------++---------++---------+         NSC SBI |                          
+     |          |          |                      |                          
+     |          |          |         +------------------------+           
+     |          |          |         |    Network Controllers |                 
+     |          |          |         +------------------------+           
+     |          |          |                      |                       
+     |          |          |                      |                      
+   .----.     ------    -------                -------                         
+ ,'      `.  *    * IETF *   *  5G  `.            * IETF *                       
+ .  RAN  *  * Network* *  Core  *           * Network*                      
+ `.      *    *      *   *      *             *      *                       
+    -----      ******     ******               ******  
+
+Figure-3 Correspondence between 5G E2E Slices and IETF Slices
+]]></artwork>
+        </figure></t>
+
+      <t>An example of 5G E2E Network Slice is showed in figure 4. Each e2e
+      network slice contains AN slice, CN slice and one or more IETF network
+      Slices. 3GPP identifies each e2e network slice using an integer called
+      S-NSSAI. In Figure 4 there are three instances of e2e network slices
+      which are identified by S-NSSAI 01111111, 02222222 and 02333333,
+      respectively. Each instance of e2e network slice contains AN slice, CN
+      Slice and one or more IETF network slices. For example, e2e network
+      slice 01111111 has AN Slice instance 4, CN Slice instance 1 and IETF
+      network slice 6. Note that 3GPP does not cover the IETF network slice.
+      See <xref target="I-D.ietf-teas-ietf-network-slices"/> for details of
+      IETF network slice.</t>
+
+      <t>Note that 3GPP uses the terms NSI and NSSI which are a set of network
+      function and required resources (e.g. compute, storage and networking
+      resources) which corresponds to network slice Instance, whereas S-NSSAI
+      is an integer that identifies the e2e network slice.</t>
+
+      <t><figure>
+          <artwork><![CDATA[            
+            +-----------+ +-----------+  +-----------+                    
+            |  S-NSSAI  | |  S-NSSAI  |  |  S-NSSAI  |                    
+            |  01111111 | |  02222222 |  |  03333333 |                    
+            +---|-------+ +---|---|---+  +----|------+                    
+                |  +----------+   |           |                              
+                V  V              V           V
+              *******       ********      ********                        
+Core         * NSSI 1 *    * NSSI 2 *    * NSSI 3 *                       
+Network       ********      ********      ********                        
+                  \              \             /                          
+                   \              \           /                           
+                   +-----+       +-----+    +-----+                           
+Transport          | IETF|       | IETF|    | IETF|
+Network            | NS 6|       | NS 7|    | NS 8|                      
+                   +-----+       +-----+    +-----+                         
+                       \              \   /                               
+                        \              \ /                                
+  Radio                 ********     ********                             
+ Access                * NSSI 4 *   * NSSI 5 *                            
+ Network                ********     ******** 
+
+
+Figure 4 5G End-to-End Network Slice and its components
+]]></artwork>
+        </figure></t>
+
+      <t>The following network slice related identifiers in management plane,
+      control plane and data(user) plane play an important role in end-to- end
+      network slice mapping:</t>
+
+      <t><list style="symbols">
+          <t>Single Network Slice Selection Assistance Information(S-NSSAI):
+          The end-to-end network slice identifier, which is defined in
+          [TS23501]; S-NSSAI is used during 3GPP network slice signalling
+          process.</t>
+
+          <t>IETF Network Slice Identifier: An identifier allocated by IETF
+          Neetwork Slice Controller (NSC) in management plane. In data plane,
+          IETF Network Slice Identifier may be instantiated with existing data
+          plane identifiers and doesn't necessarily require new
+          encapsulation.</t>
+
+          <t>IETF Network Slice Interworking Identifier: Data-plane network
+          slice identifier which is used for mapping the end-to-end network
+          slice traffic to specific IETF network slice. The IETF Network Slice
+          Interworking Identifier is a new concept introduced by this draft,
+          which may be instantiated with existing data plane identifiers and
+          doesn't necessarily require new encapsulation.</t>
+        </list>The relationship between these identifiers are specifies in the
+      following sections.</t>
+    </section>
+
+
+
 
     <section anchor="section_overview_ins_realization"
       title="Overview of IETF Network Slice Realization Methods for 3GPP Network Slices">
