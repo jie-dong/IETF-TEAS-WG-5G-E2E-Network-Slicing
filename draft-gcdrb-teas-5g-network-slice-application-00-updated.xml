@@ -213,7 +213,9 @@
       <t>NSMF: Network Slice Management Function</t>
 
       <t>NSSMF: Network Slice Subnet Management Function</t>
-    </section>
+
+      <t>IOC: Information Object Class model, defined in 3GPP</t>
+</section>
 
     <section title="5G End-to-End Network Slice">
       <t>
