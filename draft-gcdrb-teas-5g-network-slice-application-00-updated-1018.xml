@@ -1411,29 +1411,16 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
 
         <section title="Data Plane Mapping Considerations">
           <t>The mapping relationship between AN or CN network slice
-          identifier (either S-NSSAI in control plane or NSI/NSSI in
-          management plane) and IETF Network Slice Interworking ID needs to be
-          maintained in AN/CN network nodes, and the mapping relationship
-          between IETF Network Slice Interworking ID and IETF Network Slice is
-          maintained in the edge node of transport network. When the packet of
-          a uplink flow goes from AN to TN, the packet is encapsulated based
-          on the IETF Network Slice Interworking ID; then the encapsulation of
-          IETF Network Slice Interworking ID is read by the edge node of
+          and an IETF Network Slice will be based on a IETF Network Slice Interworking identifier 
+               based on the information provided by the EP_Transport IOC.
+               When the packet of
+          an uplink flow goes from AN to TN, the packet is delivered according to the information 
+               provided by the EP_Transport IOC (e.g., the information provided in the 
+               logicalInterface field); then the encapsulation is read by the edge node of
           transport network, which maps the packet to the corresponding IETF
           network slice.</t>
 
-          <t>Editor's Note: We have considered to add "Network Instance"
-          defined in [TS23501]in the draft. However, after the discussion with
-          3GPP people, we think the concept of "network instance" is a
-          'neither Necessary nor Sufficient Condition' for network slice.
-          Network Instance could be determined by S-NSSAI, it could also
-          depends on other information; Network slice could also be allocated
-          without network instance (in my understanding) And, IETF Network
-          Slice Interworking ID is not a competitive concept with network
-          instance.IETF Network Slice Interworking ID is a concept for the
-          data plane interconnection with transport network, network instance
-          may be used by AN and CN nodes to associate a network slice with
-          IETF Network Slice Interworking ID</t>
+          
         </section>
 
         <section title="Data Plane Mapping Options">
@@ -1459,7 +1446,7 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
           <t>Editor's Note: As figure 4.7.1. in <xref target="TS28530"/>
           describes, TN NS will not only exist between AN and CN but may also
           within AN NS and CN NS. However, here we just show the TN between AN
-          and CN as an example to avoid unncessary complexity.</t>
+          and CN as an example to avoid unnecessary complexity.</t>
 
           <t>The following picture shows the user plane protocol stack in
           end-to-end 5G system.<figure>
@@ -1483,8 +1470,7 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
             </figure></t>
 
           <t>The following figure shows the typical encapsulation in N3
-          interface which could be used to carry the IETF Network Slice
-          Interworking ID between AN/CN and TN.</t>
+          interface.</t>
 
           <t><figure>
               <artwork><![CDATA[+------------------------+
@@ -1658,6 +1644,14 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
                 load balancing. Using it for network slice mapping would
                 require to disable the load-balancing behavior.</t>
               </list></t>
+          </section>
+             
+          <section title="Summary">
+          
+          <t>From all the options overviewed, it should be noted that current 3GPP Release 16 only supports through EP_Transport IOC the following 
+          slice handoff identifier: vlan tag. MPLS or SID labels. Thus, the consideration of more options as the ones here reported is a gap on 3GPP 
+          specifications.</t>
+                           
           </section>
         </section>
       </section>
