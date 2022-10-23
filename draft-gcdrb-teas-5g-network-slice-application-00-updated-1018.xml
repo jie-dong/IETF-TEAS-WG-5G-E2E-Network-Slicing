@@ -1231,8 +1231,8 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
         issues in Network slice requirement mapping. GSMA(Global System for
         Mobile Communications Association) defines the <xref target="GST"/> to
         indicate the network slice requirement from the view of service
-        provider. <xref target="I-D.ietf-teas-ietf-network-slice-nbi-yang"/>
-        analysis the parameters of GST and categorize the parameters into
+        provider. <xref target="I-D.ietf-teas-ietf-network-slice-use-cases"/>
+        analyzes the parameters of GST and categorize the parameters into
         three classes, including the attributes with direct impact on the IETF
         network slice definition. It is a good start for selecting the
         transport network relevant parameters in order to define Network Slice
@@ -2027,6 +2027,9 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
       <?rfc include='reference.I-D.ietf-teas-ietf-network-slices'?>
 
       <?rfc include='reference.I-D.ietf-teas-ietf-network-slice-nbi-yang'?>
+         
+      <?rfc include='reference.I-D.ietf-teas-ietf-network-slice-use-cases'?>
+         
 
       <reference anchor="ZSM003"
                  target="https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=3144">
