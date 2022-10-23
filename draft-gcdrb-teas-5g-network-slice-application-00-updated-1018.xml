@@ -1123,6 +1123,38 @@ Figure 5-5 Example of CU-UP Slice in the 3GPP domain using an IETF Network Slice
       require of advanced features (e.g., PBR, SRv6, FlexE, etc). IETF Network
       Slice service may be a set of techniques and underlaying technologies,
       so multiple models may be used to define slice.</t>
+         
+ <t>According to the [TS28.541] attributes in the EP_Transport, the IETF
+   Network Slice may be defined by the following combination of the
+   parameters:
+ <figure>
+                <artwork><![CDATA[
+    +------------------------------------------------------------------+
+    |                   EP_Transport attribute name                    |
+    |                                                                  |
+    +---------------+----------------+----------------+----------------+
+    |   ipAddress   |logicInterfaceId|   nextHopInfo  | qosProfile     |
+    +---------------+----------------+----------------+----------------+
+    |                   Different                     |  Same for all  |
+    |                   per slice                     |    slices      |
+    +---------------+---------------------------------+----------------+
+    |  Same for all |           Different             |  Same for all  |
+    |    slices     |           per slice             |    slices      |
+    +---------------+----------------+----------------+----------------+
+    |   Different   |  Same for all  |   Different    |  Same for all  |
+    |   per slice   |    slices      |   per slice    |    slices      |
+    +---------------+----------------+----------------+----------------+
+    |         Same for all           |   Different    |  Same for all  |
+    |           slices               |   per slice    |    slices      |
+    +--------------------------------+----------------+----------------+
+    |                            Different                             |
+    |                            per slice                             |
+    +---------------+--------------------------------------------------+
+    |  Same for all |                    Different                     |
+    |    slices     |                    per slice                     |
+    +---------------+--------------------------------------------------+
+]]></artwork>
+              </figure></t>
 
       <t/>
 
@@ -1228,7 +1260,7 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
         Parameters defined in Service Profile include Latency, resource
         sharing level, availability and so on. How to decompose the end-to-end
         requirement to the transport network requirement is one of the key
-        issues in Network slice requirement mapping. GSMA(Global System for
+        issues in Network slice requirement mapping. GSMA (Global System for
         Mobile Communications Association) defines the <xref target="GST"/> to
         indicate the network slice requirement from the view of service
         provider. <xref target="I-D.ietf-teas-ietf-network-slice-use-cases"/>
