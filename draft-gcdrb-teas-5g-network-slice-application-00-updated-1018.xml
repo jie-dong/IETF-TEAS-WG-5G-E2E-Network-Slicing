@@ -178,6 +178,11 @@
       the topology and performance requirement for transport network can be
       very different, which requests transport network to have the capability
       of supporting multiple different transport network slices.</t>
+         
+      <t> This document addresses the request of IETF Network Slice services for 3GPP 5G Network Slices.
+      The realization of such requested slices is out of the scope of this document and addressed in
+      other documents such as <xref target="I-D.srld-teas-5g-slicing"/>.
+      </t>
     </section>
 
     <section title="Terminologies">
@@ -521,7 +526,7 @@ Legend
     </section>
 
     <section anchor="section_overview_ins_realization"
-             title="Overview of IETF Network Slice Realization Methods for 3GPP Network Slices">
+             title="Overview of the mapping between 3GPP and IETF network slices">
       <t>Referring to Figure 2-1, 2-2 and 2-3, a 3GPP network slice might have
       one or more IETF network slices. <xref
       target="fig_typical_ins_in_3gpp"/> is a representation of any of these
@@ -1156,6 +1161,15 @@ Figure 5-5 Example of CU-UP Slice in the 3GPP domain using an IETF Network Slice
 ]]></artwork>
               </figure></t>
 
+         <t>From the perspective of IETF Network Slice realization, some of these
+   options could be realized in a straightforward manner while other
+   could require of advanced features (e.g., PBR, SRv6, FlexE, etc).
+         </t>   
+         
+         <t>IETF Network Slice service may be a set of techniques and underlaying
+   technologies, so multiple models may be used to define slice.
+         </t>
+         
       <t/>
 
       <t/>
@@ -1236,14 +1250,13 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
       <t>10. UE starts sending traffic in context of e2e network slice for
       specific S-NASSI.</t>
 
-      <t>11. In context of GTP tunnel, the AN edge nodes encapsulates the
-      packet with sliceIID according to the selected S-NSSAI ans send it to
+      <t>11. The endpoints of the 5G network slice in AN encapsulates the
+      packet into a GTP tunnel, adds a Slice Interworking Identifier according to the selected S-NSSAI and send it to
       the transport network.</t>
 
-      <t>12. The transport network edge node receives the IP packet and parses
-      the sliceIID from the packet and maps the packet to the corresponding
-      IETF network slice. It may encapsulate packet with sliceID if needed
-      (for example for enforcing QoS in transport network).</t>
+      <t>12. The transport network edge nodes parse the Slice Interworking identifier in the received packet and maps the packet to the corresponding
+      IETF network slice. It may encapsulate the packet with slice specific identifiers for enforcing the SLA of IETF Network Slice service in the in 
+           transport network.</t>
          
          <t>Note: steps 11 and 12 under discussion since they could depend on specific realization mechanisms.</t>
          
@@ -1676,6 +1689,10 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
                 load balancing. Using it for network slice mapping would
                 require to disable the load-balancing behavior.</t>
               </list></t>
+               
+          <t>A similar approach to this is followed in <xref target="I-D.ietf-dmm-tn-aware-mobility"/>
+          </t>
+               
           </section>
              
           <section title="Summary">
@@ -2061,6 +2078,11 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
       <?rfc include='reference.I-D.ietf-teas-ietf-network-slice-nbi-yang'?>
          
       <?rfc include='reference.I-D.ietf-teas-ietf-network-slice-use-cases'?>
+         
+         
+      <?rfc include='reference.I-D.srld-teas-5g-slicing'?>
+         
+      <?rfc include='reference.I-D.ietf-dmm-tn-aware-mobility'?>
          
 
       <reference anchor="ZSM003"
