@@ -15,7 +15,7 @@
      ipr="trust200902">
   <front>
     <title abbrev="draft-gcdrb-teas-5g-network-slice-application-00">IETF
-    Network Slice Application in 5G End-to-End Network Slice</title>
+    Network Slice Application in 3GPP 5G End-to-End Network Slice</title>
 
     <author fullname="Xuesong Geng" initials="X." surname="Geng">
       <organization>Huawei Technologies</organization>
@@ -511,6 +511,12 @@ Legend
             draft, which may be instantiated with existing data plane
             identifiers and doesn't necessarily require new encapsulation.</t>
           </list></t>
+           
+         <t>
+         Note: the term "IETF Network Slice Interworking Identifier" is proposed but requires further discussion.
+         </t>
+           
+           
       </section>
     </section>
 
@@ -1158,37 +1164,41 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
 ]]></artwork>
         </figure></t>
 
-      <t>1. NSMF receives the request from CSMF for allocation of a network
+      <t>1. 3GPP NSMF receives the request from 3GPP CSMF for allocation of a network
       slice instance with certain characteristics.</t>
 
-      <t>2. Based on the service requirement , NSMF acquires requirements for
-      the end-to-end network slice instance , which is defined in Service
+      <t>2. Based on the service requirement, 3GPP NSMF acquires requirements for
+      the end-to-end network slice instance, which is defined in Service
       Profile(<xref target="TS28541"/> section 6.3.3).</t>
 
-      <t>3. Based on Service Profile, NSMF identified the network function and
+      <t>3. Based on Service Profile, 3GPP NSMF identified the network function and
       the required resources in AN, CN and TN networks. It also assigns the
       unique ID S-NSSAI.</t>
 
-      <t>4. NSMF sends a request to AN NSSMF for creation of AN Slice.</t>
+      <t>4. 3GPP NSMF sends a request to AN NSSMF for creation of AN Slice, out of the scope of this document.</t>
 
-      <t>5. NSMF sends a request to CN NSSMF for creation of CN Slice.</t>
+      <t>5. 3GPP NSMF sends a request to CN NSSMF for creation of CN Slice, out of the scope of this document.</t>
 
-      <t>6. NSMF sends a request to IETF Network Slice Controller (NSC) for
-      creation of IETF Network Slice. The request contains such attribute such
-      as endpoints, required SLA/SLO along with other IETF network slice
+      <t>6. 3GPP NSMF sends a request to IETF Network Slice Controller (NSC) (acting as an NSSMF for transport connectivity, or TN NSSMF, from the perspective of the 3GPP Management System)) for
+      creation of IETF Network Slice. The request contains attributes such
+      as endpoints (based on the information from EP_Transport IOC), required SLA/SLO along with other IETF network slice
       attributes. It also cotains mapping informatin for IETF Network Slice
       Interworking Identifier.</t>
+         
+         <t>Note: term "TN NSSMF" under discussion to ensure consistency with 3GPP specifications.</t>
 
-      <t>7. NSC realizes the IETF network slice which satisfies the
-      requirement of IETF network slice between the specified endpoints (RAN/
-      CN edge nodes). It assigns sliceID and send it to NSMF.</t>
-
-      <t>8. NSMF has the mapping relationship between S-NSSAI and IETF Network
-      Slice ID;</t>
+      <t>7. IETF NSC realizes the IETF network slice which satisfies the
+      requirements of the IETF network slice service requested between the specified endpoints (RAN/
+      CN edge nodes). It may assign sliceID and send it to 3GPP NSMF.</t>
+         
+         <t> Note: Consistency with the YANG NBI model should be ensured on parameters being passed between components</t>
+         
+      <t>8. 3GPP NSMF mantains the mapping relationship between S-NSSAI and IETF Network
+      Slice Service ID;</t>
 
       <t>9. When the User Equipment (UE) appears, and during the 5G
-      signalling, it requests to be connected to specific e2e network slice
-      identified by S-NASSI. Then a GTP tunnel (which is UDP/IP) will be
+      signaling, it requests to be connected to specific e2e network slice
+      identified by S-NASSI. Then a GTP tunnel (which is UDP/IP-based) will be
       created.</t>
 
       <t>10. UE starts sending traffic in context of e2e network slice for
@@ -1202,14 +1212,16 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
       the sliceIID from the packet and maps the packet to the corresponding
       IETF network slice. It may encapsulate packet with sliceID if needed
       (for example for enforcing QoS in transport network).</t>
-
+         
+         <t>Note: steps 11 and 12 under discussion since they could depend on specific realization mechanisms.</t>
+         
       <section title="5G E2E Network Slice Mapping in Management Plane">
         <t>The transport network management Plane maintains the interface
-        between NSMF and TN NSSMF, which 1) guarantees that IETF network slice
+        between 3GPP NSMF and TN NSSMF, which 1) guarantees that IETF network slice
         could connect the AN and CN with specified characteristics that
         satisfy the requirements of communication; 2) builds up the mapping
-        relationship between NSI identifier and TN NSSI identifier; 3)
-        maintains the end-to-end slice relevant functions;</t>
+        relationship between NSI identifier and any other identifier potentially used by the IETF NSC; 3)
+        maintains the end-to-end slice relevant functions.</t>
 
         <t>Service Profile defined in<xref target="TS28541"/> represents the
         requirement of end-to-end network slice instance in 5G network.
@@ -1228,31 +1240,24 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
         are also necessary for the definition of transport network northbound
         interface.</t>
 
-        <t>Inside the TN NSSMF, it is supposed to maintain the attributes of
-        the IETF network slice. If the attributes of an existing TN NSSI could
-        satisfy the requirement from TN Network Slice Profile, the existing TN
-        NSSI could be selected and the mapping is finished If there is no
-        existing TN NSSI which could satisfy the requirement, a new TN NSSI is
-        supposed to be created by the NSSMF with new attributes.</t>
+        <t>Inside the IETF NSC (playing the role of TN NSSMF in 3GPP scope), it is supposed to be responsible of maintaining the attributes of
+        the IETF network slice. If the attributes of an existing IETF Network Slice service could
+        satisfy the requirement from the 3GPP Network Slice Profile, an existing IETF network slice could be selected and the mapping is then finished.
+             In case there is no
+        existing IETF Network Slice which could satisfy the requirement, a new IETF Network Slice is
+        supposed to be created by the IETF NSC with the requested attributes.</t>
 
-        <t>TN NSSI resource reservation should be considered to avoid over
-        allocation from multiple requests from NSMF (but the detailed
-        mechanism should be out of scope in the draft)</t>
+        <t>IETF Network Slice resource reservation should be considered to avoid over
+        allocation from multiple requests from 3GPP NSMF (but the detailed
+        mechanism is out of scope of this draft)</t>
 
-        <t>TN NSSMF sends the selected or newly allocated TN NSSI identifier
-        to NSMF. The mapping relationship between NSI identifier and TN NSSI
-        identifier is maintained in both NSMF and TN NSSMF.</t>
-
-        <t>YANG data model for the Transport Slice NBI, which could be used by
-        a higher level system which is the Transport slice consumer of a
-        Transport Slice Controller (TSC) to request, configure, and manage the
-        components of a transport slices. The northbound Interface of IETF
-        network slice refers to <xref
-        target="I-D.ietf-teas-ietf-network-slice-nbi-yang"/>.</t>
+        <t>3GPP TN NSSMF will request the IETF Network Slice service adding in the IETF Network Slice service request some slice  identifier to
+   the IETF NSC. The mapping relationship between NSI identifier and IETF Network Slice service
+   identifier could be maintained in both 3GPP NSMF and IETF NSC.</t>
 
         <t/>
 
-        <t>At the time of provisioning a 3GPP slice, it is required to provide
+        <t>Then, at the time of provisioning a 3GPP slice, it is required to provide
         slice connectivity constructs by means of IETF network slices. Then it
         is necessary to bind two different endpoints, as depicted in Figure
         2:</t>
@@ -1265,7 +1270,7 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
             endpoints at CE side to be interconnected</t>
 
             <t>Mapping of the endpoints at both CE and PE side. The endpoint
-            at PE side should be elicited by some means by the NSC, in order
+            at PE side should be elicited by some means by the IETF NSC, in order
             to establish and set up the connectivity construct intended for
             the customer slice request, according to the SLOs and SLEs
             received from the higher level system.</t>
@@ -1306,35 +1311,35 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
           EP_Transport IOC contains parameters as IP address, additional
           identifiers (i.e., vlan tag, MPLS label, etc), and associated QoS
           profile. This IOC is related to the endpoints of the 3GPP managed
-          functions (EP_Application IOC).</t>
+          functions (detailed in the EP_Application IOC).</t>
 
-          <t>The information captured in the EP_Transport IOC (3GPP concern)
-          should be translated into the CE related parameters (IETF concern).
+          <t>The information captured in the EP_Transport IOC (as part of the 3GPP concern)
+          should be translated into the CE related parameters (as part of the IETF concern).
           There will be cases where such translation is straightforward, as
           for instance, when the 3GPP managed functions run on monolithic,
           purpose- specific network elements, in the way that the IP address
-          attribute from the EP_Transport IOC is the IP address of an
-          interface of the network element. In this case, the information on
+          attribute from the EP_Transport IOC directly corresponds to the IP address of an
+          interface of such network element. In this case, the information on
           EP_Transport IOC can be directly passed to the IETF NSC through the
           NBI, even though some additional information could be yet required,
           not being defined yet on 3GPP specifications (e.g., the mask
-          applicable to the IP address field on EP_Transport).</t>
+          applicable to the IP address field on EP_Transport). Note that information gaps are further detailed in a summary section at the end of this document.</t>
 
           <t>However, there could be other cases where such a relationship is
           not straightforward. This could be the case of virtualized 3GPP
           managed functions that could be instantiated on a general-purpose
-          network element. In these other cases it is necessary to define
+          bare-metal server or in a data center. In these other cases it is necessary to define
           additional means for eliciting the endpoint at the CE side
           corresponding to the endpoint of the 3GPP-related function.</t>
 
-          <t>With solely EP_Transport characterization in 3GPP, we could
+          <t>With solely EP_Transport characterization in 3GPP as today (i.e., according to 3GPP Release 16 specifications), we could
           expect the NS CE endpoint being identified by a combination of IP
-          address and some additional information such as vlan tag or SRv6
-          label that could discriminate against a certain logical interface.
+          address and some additional information such as vlan tag, MPLS label or SR SID
+          that could discriminate against a certain logical interface.
           The next hop router information is related to the next hop view from
           the perspective of the 3GPP entity part of the slice, then providing
           hints for determining the slice endpoint at the other side of the
-          slice service. Finally, the QoS profile helps to determine
+          slice boundary. Finally, the QoS profile, if present, helps to determine
           configurations needed at the PE side to respect the SLOs in the
           connection between CEs slice endpoints.</t>
         </section>
@@ -1367,13 +1372,14 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
 
                   Figure 7: IETF Network Slice endpoints]]></artwork>
             </figure>The information that is passed to the IETF NSC in terms
-          of endpoints is the information relative to the CE position, which
-          is the one known by the slice customer. From that information, the
-          NSC needs to infer the corresponding endpoint position at PE side,
+          of endpoints is the information relative to the CE side, which
+          is the one known by the slice customer (i.e., the 3GPP Management system, that corresponds to the 3GPP managed functions). 
+               From that information, the
+          IETF NSC needs to infer the corresponding endpoint at the PE side,
           in order to setup the desired connectivity constructs with the SLOs
           indicated in the request.</t>
 
-          <t>Being slice request technology-agnostic, the identification of
+          <t>Being the IETF slice request a technology-agnostic procedure, the identification of
           the slice endpoints at the PE side should leverage on generic
           information passed through the NBI to the IETF NSC.</t>
 
@@ -1386,20 +1392,18 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
         AN/CN in the control plane, but the S-NSSAI defined in <xref
         target="TS23501"/> is treated as the end-to-end network slice
         identifier in the control plane of AN and CN, which is used in UE
-        registration and PDU session setup. In this draft, we assume that
-        there is mapping relationship between S-NSSAI and NSI in the
-        management plane, thus it could be mapped to a IETF network slice
-        .</t>
+        registration and PDU session setup. In this draft, it is assumed that
+        there is a correspondence between S-NSSAI and the IETF Network Slice service identifier in the
+        management plane.</t>
+           
+           <t>Note: to ensure consistency with NBI YANG model (i.e., service tag)</t>
 
-        <t>Editor's note: The mapping relationship between NSI defined in
-        <xref target="TS23501"/> and S-NSSAI defined in <xref
-        target="TS23501"/> is still in discussion.</t>
       </section>
 
       <section title="5G E2E Network Slice Mapping in Data Plane">
         <t>If multiple network slices are carried through one physical
         interface between AN/CN and TN, IETF Network Slice Interworking ID in
-        the data plane needs to be introduced. If different network slices are
+        the data plane needs to be defined. If different network slices are
         transported through different physical interfaces, Network Slices
         could be distinguished by the interface directly. Thus IETF Network
         Slice Interworking ID is not the only option for network slice
