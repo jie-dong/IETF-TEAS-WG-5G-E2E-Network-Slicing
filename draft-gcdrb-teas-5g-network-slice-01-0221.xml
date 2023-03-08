@@ -174,8 +174,7 @@
 
       <t>This document addresses the request of IETF Network Slice services
       for 3GPP 5G Network Slices. The realization of such requested slices is
-      out of the scope of this document and addressed in other documents such
-      as <xref target="I-D.srld-teas-5g-slicing"/>.</t>
+      out of the scope of this document/>.</t>
     </section>
 
     <section title="Terminology">
@@ -878,10 +877,10 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
         ]]></artwork>
         </figure>
 
-        <t>To provide an overview of various IETF network slice realization
-        solutions, we focus on Figure 2-3 where the IETF network slide is INS1
+        <t>To provide an overview of various IETF network slice data plane 
+        mapping solutions, we focus on Figure 2-3 where the IETF network slide is INS1
         and NF1 and NF2 are CU and UPF, respectively. <xref
-        target="fig_typical_ins_in_3gpp_2"/> shows Although the realization
+        target="fig_typical_ins_in_3gpp_2"/> shows Although the mapping
         methods described below is related to INS1, they are applicable to
         other IETF network slices of Figure 2-1, 2-2 and 2-3. The result is
         shown in Figure 5. Please note that the IETF network slice INS1 is
@@ -936,7 +935,7 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
         ]]></artwork>
         </figure>
 
-        <t>To realize the INS1 shown in <xref
+        <t>To map 3GPP Network Slices to the INS1 shown in <xref
         target="fig_typical_ins_in_3gpp_2"/>(A), the IETF network slice
         controller (NSC) can use the following techniques: <list
             style="symbols">
@@ -948,19 +947,19 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
 
             <t>Policy Based Routing (PBR)</t>
 
-            <t>GTP source port based</t>
+            <t>UTP source port based</t>
           </list></t>
 
         <section anchor="section_vlan_handoff" title="VLAN Hand-off">
-          <t>As shown in <xref target="fig_vlan_handoff"/>, the IETF Network
-          slice INS1 is realized between network functions CU and UPF using
+          <t>As shown in <xref target="fig_vlan_handoff"/>, the 3GPP network slice is mapped to IETF Network
+          slice INS1 between network functions CU and UPF using
           the VLAN handoff. In this case the VLAN is hand-off ID from the 3GPP
           network slice to provider network. Refer to section 5 for details of
           this solution.</t>
 
           <figure align="center" anchor="fig_vlan_handoff">
-            <name>VLAN hand-off based for IETF Network Slice
-            Realization</name>
+            <name>VLAN hand-off based IETF Network Slice Mapping
+            </name>
 
             <artwork align="left"><![CDATA[
       <-------------------- INS1 ------------------->
@@ -992,23 +991,23 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
         </section>
 
         <section anchor="section_srv6_label_handoff"
-                 title="SRv6 Label Hand-off">
-          <t><xref target="fig_srv6_label_handoff"/> depicts the realization
-          of the IETF network slice INS1 using the SRv6 label handoff method.
-          In this case, an SRv6 label which represents the 3GPP network slice
+                 title="SRv6 SID Hand-off">
+          <t><xref target="fig_srv6_label_handoff"/> depicts the mapping of 3GPP network slices
+          to the IETF network slice INS1 using the SRv6 SID handoff method.
+          In this case, an SRv6 SID which represents the 3GPP network slice
           is added by CU or UPF to IP traffic. In this case, network function
-          CU and UPF are the endpoint of the realization of IETF network slice
+          CU and UPF are the endpoints of the IETF network slice
           INS1 and PE nodes do not have any context of the IETF network.</t>
 
           <t>In this solution the identification of the 3GPP network slice is
-          embedded into IPv6 label where the 32-bit 3GPP network slice
-          identification is mapped into 128 bit of IPV6 label. In this case
+          embedded into SRv6 SID where the 32-bit 3GPP network slice
+          identification is mapped into 128 bit of IPV6 address. In this case
           the SRv6 SID is hand-off ID from the 3GPP network slice to provider
           network. Refer to section 5 for details of this solution.</t>
 
           <figure align="center" anchor="fig_srv6_label_handoff">
-            <name>SRV6 hand-off based for IETF Network Slice
-            Realization</name>
+            <name>SRV6 SID hand-off for IETF Network Slice
+            Mapping</name>
 
             <artwork align="left"><![CDATA[
       <-------------------- INS1 ------------------->
@@ -1042,16 +1041,16 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
           <t>Similar to section 2.4.2, the MPLS label based method uses an
           MPLS label as identification of the 3GPP network slice. <xref
           target="fig_mpls_label_handoff"/> shows this solution where the IETF
-          network slice INS1 is relaized by CU and UPF using the MPLS label.
+          network slice INS1 is relaized between CU and UPF.
           In this case, network function CU and UPF are the endpoint of the
-          realization of IETF network slice INS1 and PE nodes do not have any
-          context of the IETF network. In this case the MPLS is hand-off ID
+          IETF network slice INS1 and PE nodes do not have any
+          context of the IETF network. In this case the MPLS label is hand-off ID
           from the 3GPP network slice to provider network. Refer to section 5
           for details of this solution.</t>
 
           <figure align="center" anchor="fig_mpls_label_handoff">
-            <name>MPLS hand-off based for IETF Network Slice
-            Realization</name>
+            <name>MPLS hand-off based IETF Network Slice
+            Mapping</name>
 
             <artwork align="left"><![CDATA[
       <-------------------- INS1 ------------------->
@@ -1100,8 +1099,8 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
             </list></t>
 
           <figure align="center" anchor="fig_pbr">
-            <name>Policy based routing (PBR) label hand-off based for IETF
-            Network Slice Realization</name>
+            <name>Policy based routing (PBR) hand-off for IETF
+            Network Slice Mapping</name>
 
             <artwork align="left"><![CDATA[
       <-------------------- INS1 ------------------->
@@ -1132,8 +1131,8 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
         <section anchor="section_gtp" title="GTP Source Port-Based">
           <t>In some deployments of the 3GPP network slices, the IETF network
           slice INS1 might be realized by multiple GTP tunnels. As shown in
-          <xref target="fig_gtp"/>, this solution uses the source UDP port of
-          the GTP tunnel to carry the identification of 3GPP network slice. A
+          <xref target="fig_gtp"/>, the source UDP port of
+          the GTP tunnel may be used to carry the identification of 3GPP network slice. A
           mapping table between the 3GPP network slice and the source UDP port
           is needed in this solution and needs to be maintained by network
           functions CU, UPF and PE nodes. Refer to section 2.5 of
@@ -1141,8 +1140,8 @@ Figure-6 Relation between IETF and 3GPP Network Slice management
           solution.</t>
 
           <figure align="center" anchor="fig_gtp">
-            <name>GTP source port-based for IETF Network Slice
-            Realization</name>
+            <name>UDP source port for IETF Network Slice
+            Mapping</name>
 
             <artwork align="left"><![CDATA[
       <-------------------- INS1 ------------------->
